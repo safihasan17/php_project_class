@@ -39,5 +39,7 @@ if(isset($_GET['page'])){
     else{
         include_once('views/pages/dashboard.php');
     }
+}else{
+    include_once('views/pages/auth/login.php');
 }
 ?>
