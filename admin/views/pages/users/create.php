@@ -1,4 +1,7 @@
 <?php
+if(($_SESSION['role_id'] ==3) || ($_SESSION['role_id'] ==4)) {
+    header("Location: access-diny");
+}
 require_once 'models/user.class.php';
 require_once 'models/role.class.php';
 

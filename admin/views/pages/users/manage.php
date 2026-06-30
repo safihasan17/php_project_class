@@ -23,10 +23,10 @@ $rows = User::readAll(1, $limit);
 // echo '</pre>';
 
 
-if(isset($_GET['pg'])){
+if (isset($_GET['pg'])) {
   $pg = $_GET['pg'];
   // echo "<h1> page Number: $pg</h1>";
-  $rows = User::readAll($pg, $limit );
+  $rows = User::readAll($pg, $limit);
 }
 ?>
 
@@ -61,7 +61,9 @@ if(isset($_GET['pg'])){
           <?php endif; ?>
           <div class="card">
             <div class="card-header">
-              <a href="create-user" class="btn btn-sm btn-dark">Create User</a>
+              <?php if (($_SESSION['role_id'] != 3) && ($_SESSION['role_id'] != 4)) : ?>
+                <a href="create-user" class="btn btn-sm btn-dark">Create User</a>
+              <?php endif; ?>
             </div>
             <!-- /.card-header -->
             <div class="card-body p-0">
@@ -72,7 +74,9 @@ if(isset($_GET['pg'])){
                       <th>ID</th>
                       <th>Name</th>
                       <th>Email</th>
-                      <th>Actions</th>
+                      <?php if (($_SESSION['role_id'] != 3) && ($_SESSION['role_id'] != 4)) : ?>
+                        <th>Actions</th>
+                      <?php endif; ?>
                     </tr>
                   </thead>
                   <tbody>
@@ -83,12 +87,18 @@ if(isset($_GET['pg'])){
                         <td><?= $item['email'] ?></td>
                         <td>
                           <div class="btn-group">
-                            <button type="button" class="btn btn-sm btn-default"><i class="fa fa-eye text-primary"></i></button>
-                            <a href="edit-user?id=<?= $item['id']; ?>" class="btn btn-sm btn-default"><i class="fa fa-edit text-success"></i></a>
-                            <form method="POST">
-                              <input type="hidden" name="delete_id" value="<?= $item['id'] ?>">
-                              <button type="submit" class="btn btn-sm btn-default"><i class="fa fa-trash text-danger"></i></button>
-                            </form>
+                            <?php if (($_SESSION['role_id'] != 3) && ($_SESSION['role_id'] != 4)) : ?>
+                              <button type="button" class="btn btn-sm btn-default"><i class="fa fa-eye text-primary"></i></button>
+                              <a href="edit-user?id=<?= $item['id']; ?>" class="btn btn-sm btn-default"><i class="fa fa-edit text-success"></i></a>
+
+                              <?php if ($_SESSION['role_id'] != 2): ?>
+                                <form method="POST">
+                                  <input type="hidden" name="delete_id" value="<?= $item['id'] ?>">
+                                  <button type="submit" class="btn btn-sm btn-default"><i class="fa fa-trash text-danger"></i></button>
+                                </form>
+                              <?php endif; ?>
+
+                            <?php endif; ?>
                           </div>
                         </td>
                       </tr>
@@ -103,9 +113,9 @@ if(isset($_GET['pg'])){
               <ul class="pagination pagination-sm m-0 float-right">
                 <li class="page-item"><a class="page-link" href="users?pg=1">«</a> </li>
 
-                 <?php for($i=1; $i<=$pages; $i++): ?>
-                <li class="page-item"><a class="page-link" href="users?pg=<?= $i; ?>"><?= $i ?></a></li>
-                 <?php endfor;?>
+                <?php for ($i = 1; $i <= $pages; $i++): ?>
+                  <li class="page-item"><a class="page-link" href="users?pg=<?= $i; ?>"><?= $i ?></a></li>
+                <?php endfor; ?>
 
                 <li class="page-item">
                   <a class="page-link" href="users?pg=<?= $pages; ?>">»</a>
